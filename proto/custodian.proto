@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package custodian;
+
+// the custodian service runs on each node
+// it stores and retrieves secret shares for threshold signing ceremonies
+service Custodian {
+  // called when a node wants to join a ceremony
+  rpc JoinCeremony(JoinRequest) returns (JoinResponse);
+  
+  // called by the client to store a share on this node
+  rpc StoreShare(ShareData) returns (StoreResponse);
+  
+  // called by the client to retrieve the share during recovery
+  rpc RetrieveShare(RetrieveRequest) returns (ShareData);
+}
+
+// request to join a ceremony
+message JoinRequest {
+  string node_id = 1;
+}
+
+// response with the assigned index for this node
+message JoinResponse {
+  bool success = 1;
+  uint32 assigned_index = 2;
+  string message = 3;
+}
+
+// a secret share (x, y coordinates on the polynomial)
+message ShareData {
+  string ceremony_id = 1;
+  bytes x = 2;  // the x coordinate as 32-byte scalar
+  bytes y = 3;  // the y coordinate as 32-byte scalar
+}
+
+// request to retrieve a previously stored share
+message RetrieveRequest {
+  string ceremony_id = 1;
+}
+
+// response after storing a share
+message StoreResponse {
+  bool success = 1;
+  string message = 2;
+}
