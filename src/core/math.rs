@@ -44,3 +44,35 @@ pub fn lagrange_interpolate(shares: &[(Scalar, Scalar)]) -> Scalar {
 
     secret
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_polynomial_evaluation() {
+        // polynomial: 5 + 3x + 2x^2
+        // at x=2: 5 + 6 + 8 = 19
+        let coeffs = vec![
+            Scalar::from(5u64),
+            Scalar::from(3u64),
+            Scalar::from(2u64),
+        ];
+        let x = Scalar::from(2u64);
+        let result = evaluate_polynomial(&coeffs, &x);
+        assert_eq!(result, Scalar::from(19u64));
+    }
+
+    #[test]
+    fn test_lagrange_interpolation() {
+        // secret is 42, polynomial is 42 + 7x (threshold 2)
+        // share at x=1: y = 49
+        // share at x=2: y = 56
+        let shares = vec![
+            (Scalar::from(1u64), Scalar::from(49u64)),
+            (Scalar::from(2u64), Scalar::from(56u64)),
+        ];
+        let secret = lagrange_interpolate(&shares);
+        assert_eq!(secret, Scalar::from(42u64));
+    }
+}
