@@ -169,17 +169,13 @@ quorum/
 
 ---
 
-## what's next
+## notes for production
 
-this is a foundation. for production use, you'd want:
+some things i'd add before running this for real:
 
-- [ ] persistent storage (shares should survive restarts)
+- [ ] persistent storage so shares survive restarts
 - [ ] mutual tls between nodes
-- [ ] authentication for the client
+- [ ] client authentication
 - [ ] key rotation ceremonies
 - [ ] audit logging
-- [ ] hardware security module (hsm) integration
-
----
-
-*built with rust. secured by math.*
+- [ ] hsm integration for key material
